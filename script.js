@@ -110,4 +110,4 @@ addHtmlWidget.addEventListener('click', () => {
     widgetModal.classList.remove('show');
 });
 
-loadWidgets();
+document.addEventListener('DOMContentLoaded', loadWidgets);
