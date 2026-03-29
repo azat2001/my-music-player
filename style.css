@@ -65,8 +65,8 @@ h1 {
     overflow: auto;
 }
 
-.widget iframe,
-.widget .widget-html {
+.widget .widget-content iframe,
+.widget .widget-content .widget-html {
     max-width: 100%;
     border: none;
     border-radius: 8px;
