@@ -17,7 +17,9 @@ function saveWidgets() {
     document.querySelectorAll('.widget').forEach(widget => {
         const content = widget.querySelector('.widget-content').innerHTML;
         const isAutoAdapt = widget.querySelector('.widget-content').classList.contains('auto-adapt');
-        widgets.push({ content, autoAdapt: isAutoAdapt });
+        const width = widget.dataset.width || '100%';
+        const height = widget.dataset.height || '300px';
+        widgets.push({ content, autoAdapt: isAutoAdapt, width, height });
     });
     localStorage.setItem(STORAGE_KEY, JSON.stringify(widgets));
 }
@@ -29,16 +31,18 @@ function loadWidgets() {
     try {
         const widgets = JSON.parse(saved);
         widgets.forEach(w => {
-            createWidget(w.content, w.autoAdapt);
+            createWidget(w.content, w.autoAdapt, w.width, w.height);
         });
     } catch (e) {
         console.error('Error loading widgets:', e);
     }
 }
 
-function createWidget(contentHTML, autoAdaptEnabled = false) {
+function createWidget(contentHTML, autoAdaptEnabled = false, width = '100%', height = '300px') {
     const widget = document.createElement('div');
     widget.className = 'widget';
+    widget.dataset.width = width;
+    widget.dataset.height = height;
 
     const contentWrapper = document.createElement('div');
     contentWrapper.className = 'widget-content';
@@ -51,6 +55,13 @@ function createWidget(contentHTML, autoAdaptEnabled = false) {
         const iframe = contentWrapper.querySelector('iframe');
         iframe.style.width = '100%';
         iframe.style.height = '100%';
+        iframe.style.minHeight = '200px';
+    } else if (!autoAdaptEnabled) {
+        if (contentWrapper.querySelector('iframe')) {
+            const iframe = contentWrapper.querySelector('iframe');
+            iframe.style.width = width;
+            iframe.style.height = height;
+        }
     }
 
     const removeBtn = document.createElement('button');
@@ -134,7 +145,7 @@ addHtmlWidget.addEventListener('click', () => {
         }
     }
 
-    createWidget(contentHTML, isAutoAdapt);
+    createWidget(contentHTML, isAutoAdapt, width, height);
     saveWidgets();
 
     closeModalFunc();
