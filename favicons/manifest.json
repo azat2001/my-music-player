@@ -1,0 +1,16 @@
+{
+  "name": "Музыкальный плеер",
+  "short_name": "Мusic Player",
+  "description": "Music player with widget support",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f4f4",
+  "theme_color": "#4CAF50",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
