@@ -7,78 +7,34 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Добро пожаловать на наш сайт</h1>
-        <p>Наслаждайтесь нашей музыкой!</p>
-        
-        <div class="player-wrapper">
-            <iframe
-                frameborder="0"
-                allow="clipboard-write"
-                src="https://music.yandex.ru/iframe/playlist/azat.garifullin.2001/1010"
-            >
-                Слушайте <a href="https://music.yandex.ru/playlists/ebd14357-a976-90e3-bb53-3283ce6f6cee?utm_source=web&utm_medium=copy_link">Музыку</a> — <a href="https://music.yandex.ru/users/azat.garifullin.2001">azat2001</a> на Яндекс Музыке
-            </iframe>
-        </div>
-
-        <div class="widget-builder">
-            <h2>Конструктор виджета</h2>
-            
-            <div class="form-group">
-                <label for="username">Имя пользователя Яндекс Музыки:</label>
-                <input type="text" id="username" placeholder="azat.garifullin.2001">
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="width">Ширина (px):</label>
-                    <input type="number" id="width" value="850" min="200" max="2000">
-                </div>
-                <div class="form-group">
-                    <label for="height">Высота (px):</label>
-                    <input type="number" id="height" value="650" min="200" max="2000">
-                </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="borderColor">Цвет границы:</label>
-                    <input type="color" id="borderColor" value="#14d74f">
-                </div>
-                <div class="form-group">
-                    <label for="borderRadius">Радиус углов (px):</label>
-                    <input type="number" id="borderRadius" value="8" min="0" max="50">
-                </div>
-            </div>
-            
-            <button class="btn-generate" id="generateBtn">+</button>
-            
-            <div class="result-section" id="resultSection">
-                <h3>Готовый код для вставки:</h3>
-                <textarea class="code-output" id="embedCode" readonly></textarea>
-                <button class="btn-copy" id="copyBtn">Копировать код</button>
-                
-                <div class="preview-section">
-                    <h3>Превью виджета:</h3>
-                    <div id="preview"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="widgets-container" id="widgetsContainer"></div>
-    </div>
+    <header>
+        <h1>Музыкальный плеер</h1>
+    </header>
     
-    <button class="add-widget-btn" id="addWidgetOpenBtn">+</button>
+    <button id="addWidgetBtn" class="add-widget-btn">+ Добавить виджет</button>
 
-    <div class="notification" id="notification">Код скопирован в буфер обмена!</div>
+    <div id="widgetContainer" class="widget-container"></div>
 
-    <div class="html-input-modal" id="htmlModal">
+    <div id="widgetModal" class="modal">
         <div class="modal-content">
-            <h3>Добавить HTML виджет</h3>
-            <textarea id="htmlCodeInput" placeholder="Вставьте ваш HTML код здесь..."></textarea>
-            <div class="modal-buttons">
-                <button class="btn-add" id="addWidgetBtn">Добавить</button>
-                <button class="btn-cancel" id="cancelWidgetBtn">Отмена</button>
+            <span class="close-modal">&times;</span>
+            <h2>Добавить виджет</h2>
+            <div class="widget-types">
+                <button class="widget-type-btn active" data-type="html">
+                    <span class="icon">&#60;/&#62;</span>
+                    HTML код
+                </button>
+            </div>
+            <div id="htmlWidgetPanel" class="widget-panel">
+                <label>Введите HTML код (iframe, видео и т.д.):</label>
+                <textarea id="widgetCode" placeholder='<iframe src="https://example.com"></iframe>'></textarea>
+                <div class="size-settings">
+                    <label>Ширина:</label>
+                    <input type="text" id="widgetWidth" placeholder="100%" value="100%">
+                    <label>Высота:</label>
+                    <input type="text" id="widgetHeight" placeholder="300px" value="300px">
+                </div>
+                <button id="addHtmlWidget" class="primary-btn">Добавить виджет</button>
             </div>
         </div>
     </div>
