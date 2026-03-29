@@ -18,7 +18,7 @@
         <h1>Музыкальный плеер</h1>
     </header>
     
-    <button id="addWidgetBtn" class="add-widget-btn">+ Добавить виджет</button>
+    <button id="addWidgetBtn" class="add-widget-btn">+</button>
 
     <div id="widgetContainer" class="widget-container"></div>
 
@@ -32,7 +32,7 @@
                     HTML код
                 </button>
             </div>
-            <div id="htmlWidgetPanel" class="widget-panel">
+            <div id="htmlWidgetPanel" class="widget-panel show">
                 <label>Введите HTML код (iframe, видео и т.д.):</label>
                 <textarea id="widgetCode" placeholder='<iframe src="https://example.com"></iframe>'></textarea>
                 <div class="size-settings">
@@ -40,6 +40,12 @@
                     <input type="text" id="widgetWidth" placeholder="100%" value="100%">
                     <label>Высота:</label>
                     <input type="text" id="widgetHeight" placeholder="300px" value="300px">
+                </div>
+                <div class="auto-adapt-info">
+                    <label>
+                        <input type="checkbox" id="autoAdapt" checked>
+                        Автоматическая адаптация
+                    </label>
                 </div>
                 <button id="addHtmlWidget" class="primary-btn">Добавить виджет</button>
             </div>

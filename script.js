@@ -8,6 +8,7 @@ const widgetContainer = document.getElementById('widgetContainer');
 const widgetCode = document.getElementById('widgetCode');
 const widgetWidth = document.getElementById('widgetWidth');
 const widgetHeight = document.getElementById('widgetHeight');
+const autoAdapt = document.getElementById('autoAdapt');
 
 const STORAGE_KEY = 'musicPlayerWidgets';
 
@@ -15,7 +16,8 @@ function saveWidgets() {
     const widgets = [];
     document.querySelectorAll('.widget').forEach(widget => {
         const content = widget.querySelector('.widget-content').innerHTML;
-        widgets.push({ content });
+        const isAutoAdapt = widget.querySelector('.widget-content').classList.contains('auto-adapt');
+        widgets.push({ content, autoAdapt: isAutoAdapt });
     });
     localStorage.setItem(STORAGE_KEY, JSON.stringify(widgets));
 }
@@ -24,19 +26,32 @@ function loadWidgets() {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (!saved) return;
 
-    const widgets = JSON.parse(saved);
-    widgets.forEach(w => {
-        createWidget(w.content);
-    });
+    try {
+        const widgets = JSON.parse(saved);
+        widgets.forEach(w => {
+            createWidget(w.content, w.autoAdapt);
+        });
+    } catch (e) {
+        console.error('Error loading widgets:', e);
+    }
 }
 
-function createWidget(contentHTML) {
+function createWidget(contentHTML, autoAdaptEnabled = false) {
     const widget = document.createElement('div');
     widget.className = 'widget';
 
     const contentWrapper = document.createElement('div');
     contentWrapper.className = 'widget-content';
+    if (autoAdaptEnabled) {
+        contentWrapper.classList.add('auto-adapt');
+    }
     contentWrapper.innerHTML = contentHTML;
+
+    if (autoAdaptEnabled && contentWrapper.querySelector('iframe')) {
+        const iframe = contentWrapper.querySelector('iframe');
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+    }
 
     const removeBtn = document.createElement('button');
     removeBtn.className = 'remove-widget-btn';
@@ -51,17 +66,25 @@ function createWidget(contentHTML) {
     widgetContainer.appendChild(widget);
 }
 
-addWidgetBtn.addEventListener('click', () => {
+function openModal() {
     widgetModal.classList.add('show');
-});
+    widgetCode.value = '';
+    widgetWidth.value = '100%';
+    widgetHeight.value = '300px';
+    autoAdapt.checked = true;
+}
 
-closeModal.addEventListener('click', () => {
+function closeModalFunc() {
     widgetModal.classList.remove('show');
-});
+}
+
+addWidgetBtn.addEventListener('click', openModal);
+
+closeModal.addEventListener('click', closeModalFunc);
 
 widgetModal.addEventListener('click', (e) => {
     if (e.target === widgetModal) {
-        widgetModal.classList.remove('show');
+        closeModalFunc();
     }
 });
 
@@ -81,6 +104,7 @@ addHtmlWidget.addEventListener('click', () => {
     const code = widgetCode.value.trim();
     const width = widgetWidth.value || '100%';
     const height = widgetHeight.value || '300px';
+    const isAutoAdapt = autoAdapt.checked;
 
     if (!code) {
         alert('Введите HTML код');
@@ -88,26 +112,32 @@ addHtmlWidget.addEventListener('click', () => {
     }
 
     let contentHTML;
-    if (code.includes('<iframe')) {
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = code;
-        const iframe = tempDiv.querySelector('iframe');
-        if (iframe) {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = code;
+
+    const iframe = tempDiv.querySelector('iframe');
+    if (iframe) {
+        if (isAutoAdapt) {
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.minHeight = '200px';
+        } else {
             iframe.style.width = width;
             iframe.style.height = height;
-            contentHTML = iframe.outerHTML;
         }
+        contentHTML = iframe.outerHTML;
     } else {
-        contentHTML = `<div class="widget-html" style="width:${width};height:${height};">${code}</div>`;
+        if (isAutoAdapt) {
+            contentHTML = `<div class="widget-html auto-adapt" style="width:100%;min-height:200px;">${code}</div>`;
+        } else {
+            contentHTML = `<div class="widget-html" style="width:${width};height:${height};">${code}</div>`;
+        }
     }
 
-    createWidget(contentHTML);
+    createWidget(contentHTML, isAutoAdapt);
     saveWidgets();
 
-    widgetCode.value = '';
-    widgetWidth.value = '100%';
-    widgetHeight.value = '300px';
-    widgetModal.classList.remove('show');
+    closeModalFunc();
 });
 
 document.addEventListener('DOMContentLoaded', loadWidgets);

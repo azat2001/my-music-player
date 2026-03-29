@@ -6,7 +6,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background: #f4f4f4;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     padding: 20px;
 }
@@ -17,25 +17,32 @@ header {
 }
 
 h1 {
-    color: #333;
-    font-size: 2rem;
+    color: #fff;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
 .add-widget-btn {
     display: block;
     margin: 0 auto 30px;
-    padding: 12px 24px;
-    font-size: 16px;
+    padding: 15px 30px;
+    font-size: 24px;
     background: #4CAF50;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 50%;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.3s;
+    width: 60px;
+    height: 60px;
+    line-height: 1;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
 }
 
 .add-widget-btn:hover {
     background: #45a049;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6);
 }
 
 .widget-container {
@@ -45,17 +52,23 @@ h1 {
     flex-direction: column;
     align-items: center;
     gap: 20px;
+    width: 100%;
 }
 
 .widget {
     background: #fff;
-    border: 1px solid #ddd;
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     width: 100%;
-    max-width: 800px;
+    max-width: 900px;
     position: relative;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .widget .widget-content {
@@ -63,15 +76,25 @@ h1 {
     justify-content: center;
     align-items: center;
     overflow: auto;
+    min-height: 100px;
 }
 
-.widget .widget-content iframe,
-.widget .widget-content .widget-html {
+.widget .widget-content > * {
     max-width: 100%;
-    border: none;
-    border-radius: 8px;
+    height: auto;
     display: block;
     margin: 0 auto;
+}
+
+.widget .widget-content iframe {
+    border: none;
+    border-radius: 8px;
+}
+
+.widget .widget-content.auto-adapt iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
 }
 
 .widget .remove-widget-btn {
@@ -88,6 +111,7 @@ h1 {
     font-size: 18px;
     line-height: 1;
     transition: background 0.3s;
+    z-index: 10;
 }
 
 .widget .remove-widget-btn:hover {
@@ -102,9 +126,10 @@ h1 {
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.6);
     justify-content: center;
     align-items: center;
+    backdrop-filter: blur(5px);
 }
 
 .modal.show {
@@ -114,10 +139,16 @@ h1 {
 .modal-content {
     background: white;
     padding: 30px;
-    border-radius: 12px;
-    max-width: 500px;
+    border-radius: 16px;
+    max-width: 550px;
     width: 90%;
     position: relative;
+    animation: modalIn 0.3s ease;
+}
+
+@keyframes modalIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 .close-modal {
@@ -127,6 +158,7 @@ h1 {
     font-size: 28px;
     cursor: pointer;
     color: #999;
+    transition: color 0.3s;
 }
 
 .close-modal:hover {
@@ -136,6 +168,7 @@ h1 {
 .modal-content h2 {
     margin-bottom: 20px;
     text-align: center;
+    color: #333;
 }
 
 .widget-types {
@@ -179,17 +212,24 @@ h1 {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
+    color: #333;
 }
 
 .widget-panel textarea {
     width: 100%;
     height: 120px;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
     resize: vertical;
     font-family: monospace;
     font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.widget-panel textarea:focus {
+    outline: none;
+    border-color: #4CAF50;
 }
 
 .size-settings {
@@ -202,27 +242,73 @@ h1 {
 
 .size-settings label {
     font-weight: normal;
+    color: #555;
 }
 
 .size-settings input {
-    padding: 8px;
+    padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 4px;
-    width: 100px;
+    border-radius: 6px;
+    width: 120px;
+    transition: border-color 0.3s;
+}
+
+.size-settings input:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+.auto-adapt-info {
+    margin: 15px 0;
+}
+
+.auto-adapt-info label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.auto-adapt-info input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
 }
 
 .primary-btn {
     width: 100%;
-    padding: 12px;
-    background: #4CAF50;
+    padding: 14px;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
     color: white;
     border: none;
     border-radius: 8px;
     font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.3s;
 }
 
 .primary-btn:hover {
-    background: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .widget {
+        padding: 15px;
+    }
+    
+    .size-settings {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .size-settings input {
+        width: 100%;
+    }
 }
