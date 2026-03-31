@@ -10,7 +10,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
     <link rel="manifest" href="favicons/site.webmanifest">
     <meta name="theme-color" content="#4CAF50">
-    <meta name="description" content="Музыкальный плеер с поддержкой виджетов">
+    <meta name="description" content="Музыкальный плеер">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,36 +18,41 @@
         <h1>Музыкальный плеер</h1>
     </header>
     
-    <button id="addWidgetBtn" class="add-widget-btn">+</button>
+    <div class="controls">
+        <button id="addWidgetBtn" class="btn btn-add" title="Добавить">+</button>
+        <button id="removeAllBtn" class="btn btn-remove" title="Удалить все">🗑</button>
+    </div>
 
     <div id="widgetContainer" class="widget-container"></div>
 
     <div id="widgetModal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2>Добавить виджет</h2>
-            <div class="widget-types">
-                <button class="widget-type-btn active" data-type="html">
-                    <span class="icon">&#60;/&#62;</span>
-                    HTML код
-                </button>
-            </div>
-            <div id="htmlWidgetPanel" class="widget-panel show">
-                <label>Введите HTML код (iframe, видео и т.д.):</label>
-                <textarea id="widgetCode" placeholder='<iframe src="https://example.com"></iframe>'></textarea>
+            <h2 id="modalTitle">Добавить виджет</h2>
+            <div class="widget-panel">
+                <label>Код iframe:</label>
+                <textarea id="widgetCode" placeholder='<iframe src="..."></iframe>'></textarea>
                 <div class="size-settings">
-                    <label>Ширина:</label>
-                    <input type="text" id="widgetWidth" placeholder="100%" value="100%">
-                    <label>Высота:</label>
-                    <input type="text" id="widgetHeight" placeholder="300px" value="300px">
+                    <div class="size-input">
+                        <label>Ширина:</label>
+                        <input type="text" id="widgetWidth" value="100%">
+                    </div>
+                    <div class="size-input">
+                        <label>Высота:</label>
+                        <input type="text" id="widgetHeight" value="300px">
+                    </div>
                 </div>
-                <div class="auto-adapt-info">
+                <div class="checkbox-group">
                     <label>
-                        <input type="checkbox" id="autoAdapt" checked>
-                        Автоматическая адаптация
+                        <input type="checkbox" id="autoAdapt">
+                        Автоадаптация
+                    </label>
+                    <label>
+                        <input type="checkbox" id="autoCenter" checked>
+                        Центрирование
                     </label>
                 </div>
-                <button id="addHtmlWidget" class="primary-btn">Добавить виджет</button>
+                <button id="saveWidgetBtn" class="btn btn-save">Добавить</button>
             </div>
         </div>
     </div>
